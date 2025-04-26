@@ -42,3 +42,4 @@ Web 优先断言。Playwright 断言专为动态 Web 而创建。检查会自动
 ![image](https://github.com/user-attachments/assets/9ca8637f-3294-4ff3-b6a1-18900e48e4ff)
 
 优化：前端的插入，以及持续询问的能力（异步操作报错)。
+[![Star History Chart](https://api.star-history.com/svg?repos=Shubhamsaboo/awesome-llm-apps&type=Date)](https://star-history.com/#Heisenberg-Gao/TravelBird)
