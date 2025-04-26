@@ -37,7 +37,7 @@ Web 优先断言。Playwright 断言专为动态 Web 而创建。检查会自动
 
 配置好参数后就可以使用了
 一些运行截图：
-![image](img.png)
+![image](https://github.com/user-attachments/assets/87d6e4cf-bfe6-463e-9098-f43b6cdf01ef)
 ![image](https://github.com/user-attachments/assets/d78a6f44-2705-4fc4-ad35-eadf9b383176)
 ![image](https://github.com/user-attachments/assets/9ca8637f-3294-4ff3-b6a1-18900e48e4ff)
 
