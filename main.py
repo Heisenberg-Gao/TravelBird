@@ -524,9 +524,9 @@ async def process_user_query(query: str):
         if hasattr(result, "final_output"):
             print("\n工作流最终结果")
             print(result.final_output)
-    # except asyncio.CancelledError as e:
-    #     print(f"任务被取消: {e}")
-    #     return False
+    except asyncio.CancelledError as e:
+        print(f"任务被取消: {e}")
+        return False
     except Exception as e:
         print(f"执行过程中出错{e}")
         traceback.print_exc()
