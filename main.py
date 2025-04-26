@@ -501,9 +501,6 @@ async def process_user_query(query: str):
             print(f"控制器 agent 交接代理：{tool_name} > {handoff.name}")
 
         # 简化查询指令，专注于查询内容
-        # formatted_query = f"""
-        # 请在高德上查找关于“{query}”的技术文档并翻译成中文
-        # """
         formatted_query = f"""
         请用高德MCP查找关于'{query}的一些回答'"""
 
