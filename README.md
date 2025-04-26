@@ -24,5 +24,17 @@ Web 优先断言。Playwright 断言专为动态 Web 而创建。检查会自动
 实现 LBS 服务与 LLM 更好的交互，高德地图 MCP Server 现已覆盖12大核心服务接口，提供全场景覆盖的地图服务，包括地理编码、逆地理编码、IP 定位、天气查询、骑行路径规划、步行路径规划、驾车路径规划、公交路径规划、距离测量、关键词搜索、周边搜索、详情搜索等。
 # 框架图 #
 ![img.png](img.png)
+# 使用说明 #
+需要创建一个.env文件来保存自己的接口信息，里面的参数包括:
+- API_KEY = "Your_API_KEY"
+- BASE_URL = "Your_Model_BASE_URL"
+- MODEL_NAME = “deep_seek-v3"
+- Gao_De_API = "Gaode_MCP_API"
+- AMAP_MAPS_API_KEY = "Gaode_MCP_API"
+- AP_APP_ID = "alipay_APP"
+- AP_APP_KEY = "alipay_KEY"
+- AP_PUB_KEY= "alipay_Public_KEY"
+
+配置好参数后就可以使用了
 
 优化：加一个前端，并且支付宝还在测试
