@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>查询结果</title>
+</head>
+
+<body>
+    <h1>查询结果</h1>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% else %}
+    <p>{{ result }}</p>
+    {% endif %}
+</body>
+
+</html>
