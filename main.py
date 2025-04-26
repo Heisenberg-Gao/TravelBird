@@ -106,10 +106,8 @@ class BrowserAgentHooks(AgentHooks):
     只要功能是：
     1.跟踪agent执行开始结果
     2.解析agent返回的markdown格式数据
-    3.提取github仓库信息和文档内容
-    4.保存这些数据以便后续处理和分析
 
-    在本项目中，他是连接浏览器agent和文档处理agent的关键环节，负责从浏览器代理返回结果中提取结构化数据
+    在本项目中，他是连接浏览器agent和高德agent的关键环节，负责从浏览器代理返回结果中提取结构化数据
     """
     def __init__(self):
          super().__init__()
