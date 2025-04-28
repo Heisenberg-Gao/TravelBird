@@ -526,20 +526,22 @@ async def process_user_query(query: str):
         print(f"执行过程中出错{e}")
         traceback.print_exc()
         return False
-    # finally:
-    #     # 确保所有资源都被释放
-    #     if playwright_server:
-    #         print("正在释放 playwright 资源...")
-    #         await playwright_server.cleanup()
-    #         print("playwright 资源释放成功")
-    #     if Gaode_server:
-    #         print("正在释放 Gaode 资源...")
-    #         await Gaode_server.cleanup()
-    #         print("Gaode 资源释放成功")
-    #     if alipay_server:
-    #         print("正在释放 alipay 资源...")
-    #         await alipay_server.cleanup()
-    #         print("alipay 资源释放成功")
+    finally:
+        #确保所有资源都被释放
+        async def cleanup_server(server, name):
+            if server:
+                try:
+                    print(f"正在释放 {name} 资源...")
+                    await asyncio.wait_for(server.cleanup(), timeout=5)
+                    print(f"{name} 资源释放成功")
+                except (asyncio.CancelledError, asyncio.TimeoutError):
+                    print(f"清理 {name} 时被取消或超时")
+                except Exception as e:
+                    print(f"清理 {name} 时出错: {e}")
+
+        await cleanup_server(playwright_server, "playwright")
+        await cleanup_server(Gaode_server, "Gaode")
+        await cleanup_server(alipay_server,"alipay")
 
 async def main():
     """
@@ -570,16 +572,22 @@ async def main():
             if not user_query.strip():
                 print("查询内容不能为空，请重新输入")
                 continue
-            await process_user_query(user_query)
+            async with asyncio.TaskGroup() as tg:
+               task = tg.create_task(process_user_query(user_query))
             print("\n输入新的查询或输入(' quit ' 或 ' exit ' 退出)")
     except KeyboardInterrupt:
         print("\n用户手动退出...")
-    except Exception as e:
-        print(f"程序发生错误{e}")
-        traceback.print_exc()
     finally:
         # 确保所有的资源都被正确释放
+        loop = asyncio.get_event_loop()
+        if loop.is_running():
+            loop.stop()
+        if sys.platform == 'win32':
+            for task in asyncio.all_tasks(loop):
+                task.cancel()
+            loop.close()
         print("\n程序结束，所有资源已经释放")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
