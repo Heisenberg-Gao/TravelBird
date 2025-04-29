@@ -1,0 +1,187 @@
+/* static/style.css */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* 新增样式 */
+.result-container {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.loading {
+    text-align: center;
+    padding: 1.5rem;
+    color: #666;
+}
+
+.loader {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(52, 152, 219, 0.2);
+    border-radius: 50%;
+    border-top-color: #3498db;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error {
+    color: #e74c3c;
+    padding: 1rem;
+    background: #fdeded;
+    border-radius: 4px;
+    margin: 1rem 0;
+}
+
+strong {
+    color: #2c3e50;
+    display: block;
+    margin: 0.8rem 0;
+}
+
+.back-btn {
+    margin-top: 1.5rem;
+    background: #27ae60;
+}
+
+/* 新增结果展示样式 */
+.result-container strong {
+    color: #2c3e50;
+    font-size: 1.2em;
+    display: block;
+    margin: 1rem 0;
+    border-left: 4px solid #3498db;
+    padding-left: 0.8rem;
+}
+
+.result-container ul {
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+}
+
+.result-container li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.weather-section {
+    background: #e3f2fd;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.route-section {
+    border: 1px solid #eee;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+}
+/* 无障碍隐藏 */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.section-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    border-bottom: 2px solid #ddd;
+}
+
+.instruction-box {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.instruction-box ul {
+    list-style: none;
+    padding-left: 1.2rem;
+}
+
+.instruction-box li::before {
+    content: "•";
+    color: #ff6b6b;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+button:hover {
+    filter: brightness(0.9);
+    transition: filter 0.2s ease;
+}
+
+.loading { display: none; }
+.result-container { display: none; }
