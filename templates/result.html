@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>查询结果</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
-    <h1>查询结果</h1>
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% else %}
-    <p>{{ result }}</p>
-    {% endif %}
+    <div class="container">
+        <h1>规划结果</h1>
+        <div id="dynamicContent">
+            {% if error %}
+            <div class="error">{{ error }}</div>
+            {% else %}
+            <div class="result">
+                <!-- 动态内容由前端渲染 -->
+            </div>
+            {% endif %}
+        </div>
+        <a href="/" class="back-btn">返回首页</a>
+    </div>
 </body>
-
 </html>
