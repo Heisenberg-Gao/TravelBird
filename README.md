@@ -40,8 +40,11 @@ Web 优先断言。Playwright 断言专为动态 Web 而创建。检查会自动
 ![image](https://github.com/user-attachments/assets/87d6e4cf-bfe6-463e-9098-f43b6cdf01ef)
 ![image](https://github.com/user-attachments/assets/d78a6f44-2705-4fc4-ad35-eadf9b383176)
 ![image](https://github.com/user-attachments/assets/9ca8637f-3294-4ff3-b6a1-18900e48e4ff)
+<img width="1278" alt="abcc20c740904f1714b05dce88c5e40" src="https://github.com/user-attachments/assets/ae406bee-3ca8-45b2-9041-10eae721a708" />
+<img width="1280" alt="88aff29b6497b9439861a689d3de9b2" src="https://github.com/user-attachments/assets/7af40ef2-1bd1-4b7f-a882-f740d17952c8" />
 
-优化：前端的插入，以及持续询问的能力（异步操作报错)。
+
+优化：前端的美观程度，以及上下文的记忆能力，而不是单纯的只是输出结果
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Heisenberg-Gao/TravelBird&type=Date)](https://www.star-history.com/#Heisenberg-Gao/TravelBird&Date)
