@@ -1,18 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>小鸟地图旅行路线规划系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小鸟地图旅行规划</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
-    <h1>小鸟地图旅行路线规划系统</h1>
-    <form action="/process_query" method="post">
-        <label for="query">请输入你想去的地方:</label>
-        <input type="text" id="query" name="query" required>
-        <button type="submit">查询</button>
-    </form>
-</body>
+    <div class="container">
+        <h1>🐦 小鸟地图旅行规划系统</h1>
+        <div class="section-divider">
+            <span>🌎 小鸟地图旅行路线规划系统 🌎</span>
+        </div>
+        <div class="instruction-box">
+            <p>🌟 输入你想去的地方，系统将帮你进行搜索和规划</p>
+            <p>🌟 提问示例：</p>
+            <ul>
+                <li>大理古城附近的景点，并给我提供具体的步行路线规划</li>
+                <li>帮我导航从昆明到哈尔滨</li>
+                <li>云南大学东陆校区附近的一些酒店推荐</li>
+            </ul>
+        </div>
 
+        <form id="queryForm">
+            <div class="input-group">
+                <label for="query" class="sr-only">目的地输入</label>
+                <input type="text" id="query" name="query"
+                       placeholder="请输入目的地，例如：北京故宫附近的景点路线规划" required>
+                <button type="submit">开始规划</button>
+            </div>
+        </form>
+
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div class="loader"></div>
+            <p>正在努力规划路线中...</p>
+        </div>
+
+        <!-- 结果展示 -->
+        <div id="resultContainer" class="result-container">
+            <div id="resultContent"></div>
+            <button onclick="resetForm()" class="back-btn">重新规划</button>
+        </div>
+    </div>
+<script>
+document.getElementById('queryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = document.getElementById('query').value;
+    const resultDiv = document.getElementById('resultContent');
+    const container = document.getElementById('resultContainer');
+    const loading = document.getElementById('loading');
+
+    loading.style.display = 'block';
+    container.style.display = 'none';
+
+    try {
+        const response = await fetch('/process_query', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `query=${encodeURIComponent(query)}`
+        });
+
+        const data = await response.json();
+        loading.style.display = 'none';
+
+        if (data.error) {
+            resultDiv.innerHTML = `<div class="error">${data.error}</div>`;
+        } else if (data.html_content) {
+            // 直接使用后端格式化好的HTML
+            resultDiv.innerHTML = data.html_content;
+        } else {
+            resultDiv.innerHTML = "未找到有效结果";
+        }
+
+        container.style.display = 'block';
+        window.scrollTo({
+            top: container.offsetTop - 50,
+            behavior: 'smooth'
+        });
+
+    } catch (err) {
+        loading.style.display = 'none';
+        resultDiv.innerHTML = `<div class="error">请求失败：${err.message}</div>`;
+        container.style.display = 'block';
+    }
+});
+</script>
+</body>
 </html>
