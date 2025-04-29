@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,24 +7,44 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🐦 小鸟地图旅行规划系统</h1>
-        <div class="section-divider">
-            <span>🌎 小鸟地图旅行路线规划系统 🌎</span>
-        </div>
-        <div class="instruction-box">
-            <p>🌟 输入你想去的地方，系统将帮你进行搜索和规划</p>
-            <p>🌟 提问示例：</p>
-            <ul>
-                <li>大理古城附近的景点，并给我提供具体的步行路线规划</li>
-                <li>帮我导航从昆明到哈尔滨</li>
-                <li>云南大学东陆校区附近的一些酒店推荐</li>
-            </ul>
-        </div>
+<!-- 修改标题和说明部分 -->
+<div class="container">
+    <h1 class="main-title">
+        <span class="icon">🐦</span>
+        小鸟地图旅行规划系统
+    </h1>
 
+    <div class="section-divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">智能路线规划系统</span>
+        <div class="divider-line"></div>
+    </div>
+
+    <div class="instruction-box gradient-bg">
+        <div class="instruction-header">
+            <span class="icon">🗺️</span>
+            <h2>使用指南</h2>
+        </div>
+        <div class="example-list">
+            <div class="example-item">
+                <span class="bullet">✨</span>
+                <p>大理古城附近的景点步行路线规划</p>
+            </div>
+            <div class="example-item">
+                <span class="bullet">🚗</span>
+                <p>昆明到哈尔滨的导航路线</p>
+            </div>
+            <div class="example-item">
+                <span class="bullet">🏨</span>
+                <p>云南大学东陆校区附近酒店推荐</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保持原有表单结构 -->
+</div>
         <form id="queryForm">
             <div class="input-group">
-                <label for="query" class="sr-only">目的地输入</label>
                 <input type="text" id="query" name="query"
                        placeholder="请输入目的地，例如：北京故宫附近的景点路线规划" required>
                 <button type="submit">开始规划</button>
@@ -32,17 +52,18 @@
         </form>
 
         <!-- 加载状态 -->
-        <div id="loading" class="loading">
+        <div id="loading" class="loading" style="display:none;">
             <div class="loader"></div>
             <p>正在努力规划路线中...</p>
         </div>
 
         <!-- 结果展示 -->
-        <div id="resultContainer" class="result-container">
+        <div id="resultContainer" class="result-container" style="display:none;">
             <div id="resultContent"></div>
             <button onclick="resetForm()" class="back-btn">重新规划</button>
         </div>
     </div>
+
 <script>
 document.getElementById('queryForm').addEventListener('submit', async (e) => {
     e.preventDefault();
