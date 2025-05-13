@@ -86,36 +86,39 @@ async def handle_query(request):
 
 
 def format_result(raw_data, result_type):
-    """将原始数据转换为结构化HTML内容
-       转换成HTML内容后可以在前端输出
-    参数：
-        raw_data (str): 原始文本数据
-        result_type (str): 结果类型标识
-
-    返回：
-        str: 格式化后的HTML字符串，包含：
-        - 标题（h3标签）
-        - 列表项（li标签）
-        - 段落（p标签）
-        - 类型标识的div容器
-        - 时间戳
-    """
     sections = []
     current_section = []
 
-    # 按分隔符拆分内容
+    # 正则表达式模式：匹配以数字+点+空格开头的行（如 "1. "、"2. " 等）
+    number_pattern = re.compile(r'^\d+\.\s')
+
     for line in raw_data.split('\n'):
+        line = line.strip()  # 去除行首行尾的空白字符
+
         if line.startswith('##'):
+            # 处理标题行
             if current_section:
                 sections.append('\n'.join(current_section))
                 current_section = []
             current_section.append(f'<h3>{line.strip("# ")}</h3>')
-        elif line.startswith('-'):
+
+        elif number_pattern.match(line):
+            # 处理数字开头的行（如酒店名称行）
+            # 提取酒店名称部分（去除数字和点）
+            content = line.split('. ', 1)[1]
+            current_section.append(f'<h4>{content}</h4>')
+
+        elif line.startswith('- '):
+            # 处理列表项行（如评分、类型等）
             current_section.append(f'<li>{line[2:]}</li>')
+
         else:
+            # 处理普通段落行
             current_section.append(f'<p>{line}</p>')
 
-    # 添加类型标识
+    if current_section:
+        sections.append('\n'.join(current_section))
+
     return f'''
     <div class="result {result_type}">
         {"".join(sections)}
