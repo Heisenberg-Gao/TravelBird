@@ -7,6 +7,20 @@ pip plawright，
 
 配置API，
 
+### MCP sever configuration
+
+~~~json
+playwright_server = MCPServerStdio(
+        name="playwright",
+        params={
+            "command": "npx",  # 运行npx命令，用于执行playwright MCP 服务
+            "args": ["-y", "@playwright/mcp@latest"],  # 启用最新版的playwright MCP服务
+            "env": {}  # 环境变量，在本项目中不需要额外配置
+        },
+        cache_tools_list=True  # 启用工具缓存，减少重复运行 MCP服务运行工具列表查询的开销
+    )
+~~~
+
 时间有限，就不具体写了，有时间的时候再说吧。
 # 🌎小鸟地图🌎
 这是一个**旅行助手**，它能帮助您规划旅行路线、酒店推荐等与旅行相关的操作，类似的，你可以询问它**从昆明到北京的路线**，或者**云南大学东陆校区
