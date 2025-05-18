@@ -35,8 +35,8 @@ input[type="text"] {
 
 button {
     padding: 12px 24px;
-    background-color: #3498db;
-    color: white;
+    background-color: transparent;
+    color: black;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -44,7 +44,7 @@ button {
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: transparent;
 }
 
 /* 新增样式 */
@@ -68,7 +68,7 @@ button:hover {
     height: 2rem;
     border: 3px solid rgba(52, 152, 219, 0.2);
     border-radius: 50%;
-    border-top-color: #3498db;
+    border-top-color: transparent;
     animation: spin 1s linear infinite;
     margin-bottom: 1rem;
 }
@@ -113,7 +113,7 @@ strong {
     font-size: 1.2em;
     display: block;
     margin: 1rem 0;
-    border-left: 4px solid #3498db;
+    border-left: 4px solid transparent;
     padding-left: 0.8rem;
 }
 
@@ -398,7 +398,6 @@ button[type="submit"]:hover {
 .description {
     color: #34495e;
     line-height: 1.8;
-    border-left: 3px solid #3498db;
+    border-left: 3px solid transparent;
     padding-left: 1rem;
 }
-
