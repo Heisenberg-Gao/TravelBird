@@ -6,7 +6,7 @@
 # 如何使用
 下载Node.js，
 ~~~
-pip playwright
+pip install playwright
 ~~~
 
 配置API，
