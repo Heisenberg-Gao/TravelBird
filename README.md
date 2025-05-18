@@ -4,7 +4,7 @@
 # 如何使用
 Node.js，
 
-pip plawright，
+pip playwright，
 
 配置API，
 
