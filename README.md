@@ -8,20 +8,58 @@ pip plawright，
 配置API，
 
 ### MCP sever configuration
-
+##Playwright
 ~~~json
-playwright_server = MCPServerStdio(
-        name="playwright",
-        params={
-            "command": "npx",  # 运行npx命令，用于执行playwright MCP 服务
-            "args": ["-y", "@playwright/mcp@latest"],  # 启用最新版的playwright MCP服务
-            "env": {}  # 环境变量，在本项目中不需要额外配置
-        },
-        cache_tools_list=True  # 启用工具缓存，减少重复运行 MCP服务运行工具列表查询的开销
-    )
+{
+    "mcpServers": {
+        "playwright": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@playwright/mcp@latest"
+            ]
+        }
+    }
+}
+~~~
+##Gaode-MCP
+~~~json
+{
+    "mcpServers": {
+        "amap-maps": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@amap/amap-maps-mcp-server"
+            ]
+            "env": {
+                "AMAP_MAPS_API_KEY": f"{AMAP_MAPS_API_KEY}"
+            }
+        }
+    }
+}
+~~~
+##Alipay-MCP
+~~~json
+{
+    "mcpServers": {
+        "mcp-server-alipay": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@alipay/mcp-server-alipay"
+            ]
+            "env": {
+                "AP_APP_ID": f"{AP_APP_ID}",
+                "AP_APP_KEY": f"{AP_APP_KEY}",
+                "AP_PUB_KEY": f"{AP_PUB_KEY}"
+            },
+        }
+    }
+}
 ~~~
 
-时间有限，就不具体写了，有时间的时候再说吧。
+注意：npx是运行环境，必须下载node.js，不然会报错！配置的时候，如果MCP是需要密钥的，就要注意配置"env",没有密钥的，"env"就是空，配置MCP的关键参数："args":的第二个参数"@alipay/mcp-server-alipay",这是MCP的地址。
 # 🌎小鸟地图🌎
 这是一个**旅行助手**，它能帮助您规划旅行路线、酒店推荐等与旅行相关的操作，类似的，你可以询问它**从昆明到北京的路线**，或者**云南大学东陆校区
 附近的景点推荐，并给我一些步行的路线规划**，不用担心**天气**问题，它会一并输出。
