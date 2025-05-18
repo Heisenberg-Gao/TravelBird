@@ -5,8 +5,9 @@
 我们渴望得到您的建议，如果您有任何想法，请发送邮件到 pengyugaoynu@stu.ynu.edu.cn,我们随时等待您的建议！
 # 如何使用
 Node.js，
-
-pip playwright，
+~~~
+pip playwright
+~~~
 
 配置API，
 
