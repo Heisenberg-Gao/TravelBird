@@ -1,17 +1,18 @@
 # 🤝建议🤝
 我们渴望得到您的建议，如果您有任何想法，请发送邮件到 pengyugaoynu@stu.ynu.edu.cn,我们随时等待您的建议！
 # 如何使用
-Node.js
-pip plawright
-配置API
-时间有限，就不具体写了，有时间的时候再说吧
+Node.js，
+pip plawright，
+配置API，
+时间有限，就不具体写了，有时间的时候再说吧。
 # 🌎小鸟地图🌎
 这是一个**旅行助手**，它能帮助您规划旅行路线、酒店推荐等与旅行相关的操作，类似的，你可以询问它**从昆明到北京的路线**，或者**云南大学东陆校区
 附近的景点推荐，并给我一些步行的路线规划**，不用担心**天气**问题，它会一并输出。
 # 主体框架图
-![Uploading 旅行鸟框架图.svg…]()
+![项目流程图](https://github.com/user-attachments/assets/5a17c42e-6328-411a-a5e6-924eb152e3d4)
 # 旅游询问框架图
-![Uploading 具体流程图.svg…]()
+![具体流程图](https://github.com/user-attachments/assets/68f0d5fd-98ea-4252-b699-b5e1c9374f00)
+
 # 使用说明 #
 需要创建一个.env文件来保存自己的接口信息，里面的参数包括:
 - API_KEY = "Your_API_KEY"
