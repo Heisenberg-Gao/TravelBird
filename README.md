@@ -33,7 +33,7 @@ pip plawright，
                 "@amap/amap-maps-mcp-server"
             ]
             "env": {
-                "AMAP_MAPS_API_KEY": f"{AMAP_MAPS_API_KEY}"
+                "AMAP_MAPS_API_KEY": "你的高德Key"
             }
         }
     }
@@ -50,9 +50,9 @@ pip plawright，
                 "@alipay/mcp-server-alipay"
             ]
             "env": {
-                "AP_APP_ID": f"{AP_APP_ID}",
-                "AP_APP_KEY": f"{AP_APP_KEY}",
-                "AP_PUB_KEY": f"{AP_PUB_KEY}"
+                "AP_APP_ID": "你的支付宝应用ID",
+                "AP_APP_KEY": "你的私有钥匙",
+                "AP_PUB_KEY": "你的公有钥匙"
             },
         }
     }
