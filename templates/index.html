@@ -1,111 +1,338 @@
-
+<!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>小鸟地图旅行规划</title>
+    <title>Travel Bird(旅行鸟)-规划系统</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- 安全密钥配置（2021年12月后申请的Key必须配置） -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "你的高德web JS 安全密钥" // 替换为实际安全密钥
+        };
+    </script>
+
+    <!-- 高德地图Loader -->
+    <script src="https://webapi.amap.com/loader.js"></script>
+    <style>
+        /* 地图与结果面板布局 */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        #mapContainer {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
+
 <body>
-<!-- 修改标题和说明部分 -->
-<div class="container">
-    <h1 class="main-title">
-        <span class="icon">🐦</span>
-        小鸟地图旅行规划系统
-    </h1>
+    <div class="container">
+        <h1 class="main-title">
+            <span class="icon">🐦</span>
+            Travel Bird(旅行鸟)-规划系统
+        </h1>
 
-    <div class="section-divider">
-        <div class="divider-line"></div>
-        <span class="divider-text">智能路线规划系统</span>
-        <div class="divider-line"></div>
-    </div>
-
-    <div class="instruction-box gradient-bg">
-        <div class="instruction-header">
-            <span class="icon">🗺️</span>
-            <h2>使用指南</h2>
+        <div class="section-divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">智能路线规划系统</span>
+            <div class="divider-line"></div>
         </div>
-        <div class="example-list">
-            <div class="example-item">
-                <span class="bullet">✨</span>
-                <p>大理古城附近的景点步行路线规划</p>
+
+        <div class="instruction-box gradient-bg">
+            <div class="instruction-header">
+                <span class="icon">🗺️</span>
+                <h2>使用指南</h2>
             </div>
-            <div class="example-item">
-                <span class="bullet">🚗</span>
-                <p>昆明到哈尔滨的导航路线</p>
-            </div>
-            <div class="example-item">
-                <span class="bullet">🏨</span>
-                <p>云南大学东陆校区附近酒店推荐</p>
+            <div class="example-list">
+                <div class="example-item">
+                    <span class="bullet">✨</span>
+                    <button onclick="fillAndSimulate('大理古城附近的景点步行路线规划')">大理古城附近的景点步行路线规划</button>
+                </div>
+                <div class="example-item">
+                    <span class="bullet">🚗</span>
+                    <button onclick="fillAndSimulate('翠湖附近的景点')">翠湖附近的景点</button>
+                </div>
+                <div class="example-item">
+                    <span class="bullet">🏨</span>
+                    <button onclick="fillAndSimulate('云南大学东陆校区附近酒店推荐')">云南大学东陆校区附近酒店推荐</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- 保持原有表单结构 -->
-</div>
         <form id="queryForm">
             <div class="input-group">
                 <input type="text" id="query" name="query"
                        placeholder="请输入目的地，例如：北京故宫附近的景点路线规划" required>
-                <button type="submit">开始规划</button>
+                <button type="submit" id="submitButton">开始规划</button>
             </div>
         </form>
 
-        <!-- 加载状态 -->
         <div id="loading" class="loading" style="display:none;">
             <div class="loader"></div>
             <p>正在努力规划路线中...</p>
         </div>
 
-        <!-- 结果展示 -->
         <div id="resultContainer" class="result-container" style="display:none;">
             <div id="resultContent"></div>
             <button onclick="resetForm()" class="back-btn">重新规划</button>
+            <!-- 新增重置路线按钮 -->
+            <button onclick="resetRoute()" class="reset-route-btn">重置路线</button>
+        </div>
+
+        <!-- 地图容器 -->
+        <div class="map-container">
+            <div id="mapContainer"></div>
         </div>
     </div>
 
-<script>
-document.getElementById('queryForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const query = document.getElementById('query').value;
-    const resultDiv = document.getElementById('resultContent');
-    const container = document.getElementById('resultContainer');
-    const loading = document.getElementById('loading');
+    <script>
+        // 全局变量
+        const submitButton = document.getElementById('submitButton');
+        const queryInput = document.getElementById('query');
+        const mapContainer = document.getElementById('mapContainer');
+        let isSimulating = false;
+        let map = null;
+        let markers = [];
+        let selectedMarkers = [];
+        let driving;
 
-    loading.style.display = 'block';
-    container.style.display = 'none';
-
-    try {
-        const response = await fetch('/process_query', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `query=${encodeURIComponent(query)}`
-        });
-
-        const data = await response.json();
-        loading.style.display = 'none';
-
-        if (data.error) {
-            resultDiv.innerHTML = `<div class="error">${data.error}</div>`;
-        } else if (data.html_content) {
-            // 直接使用后端格式化好的HTML
-            resultDiv.innerHTML = data.html_content;
-        } else {
-            resultDiv.innerHTML = "未找到有效结果";
+        // 模拟点击函数
+        function simulateButtonClick() {
+            if (isSimulating) return;
+            isSimulating = true;
+            const originalValue = queryInput.value;
+            queryInput.value = '正在搜索...';
+            setTimeout(() => {
+                queryInput.value = originalValue;
+                submitButton.click();
+                isSimulating = false;
+            }, 1500);
         }
 
-        container.style.display = 'block';
-        window.scrollTo({
-            top: container.offsetTop - 50,
-            behavior: 'smooth'
+        // 填充搜索框并模拟点击
+        function fillAndSimulate(query) {
+            queryInput.value = query;
+            simulateButtonClick();
+        }
+
+        // 提取地点函数
+        function extractLocations(htmlContent) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, "text/html");
+            const headingElements = doc.querySelectorAll("h4");
+            const locations = Array.from(headingElements).map(el =>
+                el.textContent.trim().replace(/\*\*/g, '')
+            );
+            const uniqueLocations = [...new Set(locations)];
+            const invalidKeywords = [];
+            return uniqueLocations.filter(location =>
+                location.length > 1 && !invalidKeywords.includes(location)
+            );
+        }
+
+        // 表单提交处理
+        document.getElementById('queryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const query = queryInput.value;
+            const resultDiv = document.getElementById('resultContent');
+            const loading = document.getElementById('loading');
+
+            loading.style.display = 'block';
+            resultDiv.innerHTML = '';
+            mapContainer.style.display = 'none';
+
+            // 清除现有标记
+            if (map) {
+                map.clearMap();
+            }
+            markers = [];
+            selectedMarkers = [];
+
+            try {
+                // 加载高德地图API及插件
+                const AMap = await AMapLoader.load({
+                    key: "你的高德web JS API 的Key", // 替换为实际Key
+                    version: "2.0", // 使用2.0版本API
+                    plugins: ["AMap.Geocoder", "AMap.Driving"] // 按需加载地理编码和驾车路线规划插件
+                });
+
+                // 初始化地图
+                map = new AMap.Map('mapContainer', {
+                    zoom: 10,
+                    center: [116.397428, 39.90923], // 北京默认中心
+                    resizeEnable: true, // 支持窗口缩放
+                    mapStyle: 'amap://styles/normal' // 标准地图样式
+                });
+                mapContainer.style.display = 'block';
+
+                // 初始化驾车路线规划插件
+                driving = new AMap.Driving({
+                    map: map,
+                    panel: "resultContent"
+                });
+
+                // 发送后端请求
+                const response = await fetch('/process_query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `query=${encodeURIComponent(query)}`
+                });
+                const data = await response.json();
+
+                if (data.error) {
+                    resultDiv.innerHTML = `<div class="error">${data.error}</div>`;
+                } else if (data.html_content) {
+                    resultDiv.innerHTML = data.html_content;
+                    const extractedLocations = extractLocations(data.html_content);
+                    console.log("提取的地点:", extractedLocations);
+
+                    // 为所有提取的地点创建标记（每个关键词只对应一个点）
+                    createMarkersForLocations(extractedLocations);
+                } else {
+                    resultDiv.innerHTML = "未找到相关结果";
+                }
+
+                // 显示结果容器
+                document.getElementById('resultContainer').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error("系统错误：", error);
+                resultDiv.innerHTML = `<div class="error">${error.message}</div>`;
+            } finally {
+                loading.style.display = 'none';
+            }
         });
 
-    } catch (err) {
-        loading.style.display = 'none';
-        resultDiv.innerHTML = `<div class="error">请求失败：${err.message}</div>`;
-        container.style.display = 'block';
-    }
-});
-</script>
+        // 创建标记函数 - 确保每个关键词只创建一个标记
+        function createMarkersForLocations(locations) {
+            // 使用Set去重，避免重复搜索相同的关键词
+            const uniqueLocations = [...new Set(locations)];
+
+            uniqueLocations.forEach(location => {
+                // 使用AMap.Geocoder直接获取坐标，比PlaceSearch更精确
+                AMap.plugin('AMap.Geocoder', function() {
+                    const geocoder = new AMap.Geocoder({
+                        city: "昆明"
+                    });
+
+                    geocoder.getLocation(location, function(status, result) {
+                        if (status === 'complete' && result.info === 'OK') {
+                            if (result.geocodes && result.geocodes.length > 0) {
+                                // 只取第一个结果创建标记
+                                const position = result.geocodes[0].location;
+                                createSingleMarker(location, position);
+                            } else {
+                                console.warn(`无法找到地点: ${location}`);
+                            }
+                        } else {
+                            console.warn(`地理编码失败: ${location}`);
+                        }
+                    });
+                });
+            });
+        }
+
+        // 创建单个标记的辅助函数
+        function createSingleMarker(location, position) {
+            const marker = new AMap.Marker({
+                position: position,
+                title: location,
+                map: map,
+                icon: new AMap.Icon({
+                    image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    size: new AMap.Size(25, 34)
+                }),
+                offset: new AMap.Pixel(-12, -34)
+            });
+
+            markers.push(marker);
+
+            // 创建信息窗口
+            const infoWindow = new AMap.InfoWindow({
+                content: `<div style="padding:5px;"><strong>${location}</strong></div>`,
+                offset: new AMap.Pixel(0, -30)
+            });
+
+            // 绑定点击事件
+            marker.on('click', function() {
+                infoWindow.open(map, marker.getPosition());
+                selectMarker(marker);
+            });
+
+            // 自动打开第一个标记的信息窗口
+            if (markers.length === 1) {
+                setTimeout(() => {
+                    infoWindow.open(map, marker.getPosition());
+                }, 1000);
+            }
+        }
+
+        // 选择标记点
+        function selectMarker(marker) {
+            if (selectedMarkers.includes(marker)) {
+                // 如果已经选择，取消选择
+                const index = selectedMarkers.indexOf(marker);
+                selectedMarkers.splice(index, 1);
+                marker.setIcon(new AMap.Icon({
+                    image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                    size: new AMap.Size(25, 34)
+                }));
+            } else {
+                // 如果未选择，选择该标记点
+                selectedMarkers.push(marker);
+                marker.setIcon(new AMap.Icon({
+                    image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_r.png',
+                    size: new AMap.Size(25, 34)
+                }));
+            }
+
+            if (selectedMarkers.length === 2) {
+                // 当选择了两个标记点时，进行驾车路线规划
+                const start = selectedMarkers[0].getPosition();
+                const end = selectedMarkers[1].getPosition();
+                driving.search(start, end);
+            }
+        }
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('queryForm').reset();
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('mapContainer').style.display = 'none';
+
+            if (map) {
+                map.clearMap();
+                markers = [];
+                selectedMarkers = [];
+            }
+        }
+
+        // 重置路线
+        function resetRoute() {
+            if (map) {
+                // 清除驾车路线
+                driving.clear();
+                // 重置标记点样式
+                selectedMarkers.forEach(marker => {
+                    marker.setIcon(new AMap.Icon({
+                        image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+                        size: new AMap.Size(25, 34)
+                    }));
+                });
+                // 清空已选择的标记点
+                selectedMarkers = [];
+            }
+        }
+    </script>
 </body>
+
 </html>
+
