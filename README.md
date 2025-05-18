@@ -82,8 +82,6 @@ pip playwright，
 
 配置好参数后就可以使用了
 一些运行截图：
-<img width="1278" alt="abcc20c740904f1714b05dce88c5e40" src="https://github.com/user-attachments/assets/ae406bee-3ca8-45b2-9041-10eae721a708" />
-<img width="1280" alt="88aff29b6497b9439861a689d3de9b2" src="https://github.com/user-attachments/assets/7af40ef2-1bd1-4b7f-a882-f740d17952c8" />
 ![image](https://github.com/user-attachments/assets/e836c875-9734-4003-af52-14ae421a61ad)
 ![image](https://github.com/user-attachments/assets/cb7a8066-a9e9-404f-87f9-f7953dcf9902)
 ![image](https://github.com/user-attachments/assets/6e126d23-70c8-4335-a277-f8d35c7a5eb5)
