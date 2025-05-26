@@ -2,7 +2,7 @@ import asyncio
 import traceback
 from agents import Runner, RunConfig
 from services.agent_service import (
-    create_browser_agent,
+    #create_browser_agent,
     create_Gaode_agent,
     create_alipay_agent,
     create_controller_agent
@@ -30,15 +30,15 @@ async def process_user_query(query: str) -> dict:
         bool:处理才成功返回True，否则返回FALSE,用于向用户返回操作结果
     """
     cleanup_tasks = []
-    playwright_server = None
+    #playwright_server = None
     Gaode_server = None
     alipay_server = None
     try:
         print("========== 开始处理用户查询 ===========")
 
         #创建browser
-        browser_agent, playwright_server = await create_browser_agent()
-        print("playwright MCP 创建成功")
+        # browser_agent, playwright_server = await create_browser_agent()
+        # print("playwright MCP 创建成功")
         # 创建高德agent
         # 负责使用Gaode
         Gaode_agent, Gaode_server = await create_Gaode_agent()
@@ -50,7 +50,7 @@ async def process_user_query(query: str) -> dict:
 
         # 创建控制器agent
         # 负责协调整个工作流程，管理浏览器agent和文档处理agent作为项目中的系统调度中心
-        controller_agent = await create_controller_agent(Gaode_agent, browser_agent, alipay_agent)
+        controller_agent = await create_controller_agent(Gaode_agent, alipay_agent)
         print("控制器 agent 创建成功")
 
         for tool in controller_agent.tools:
@@ -61,7 +61,6 @@ async def process_user_query(query: str) -> dict:
             print(f"控制器 agent 交接代理：{tool_name} > {handoff.name}")
 
         cleanup_tasks.extend([
-            (playwright_server, "playwright"),
             (Gaode_server, "Gaode"),
             (alipay_server, "alipay")
         ])
@@ -120,7 +119,7 @@ async def process_user_query(query: str) -> dict:
 
         # 使用同一事件循环执行清理
         await asyncio.gather(
-            safe_cleanup(playwright_server, "Playwright"),
+            #safe_cleanup(playwright_server, "Playwright"),
             safe_cleanup(Gaode_server, "高德地图"),
             safe_cleanup(alipay_server, "支付宝"),
             return_exceptions=True  # 避免单个失败影响整体
