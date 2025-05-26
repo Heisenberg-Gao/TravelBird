@@ -17,7 +17,7 @@ API_KEY 是大模型的 API_KEY , BASE_URL 是大模型的固定 URL，MODEL_NAM
 运行在web.py生成的前端网页，本地电脑接口 8080 中使用
 
 ~~~
-pip install playwright
+pip install playwright（非必要，此功能目前注释了）
 ~~~
 
 配置API，
