@@ -3,7 +3,6 @@
 """
 import asyncio  # 导入异步IO库，用于实现异步编程
 import os  # 导入操作系统模块，在本项目中用于读取环境变量文件
-import sys
 import traceback  # 用于捕获和打印详细的异常信息
 from typing import Any  # 导入类型提示工具，增强代码的提示安全，在本项目中用于标记函数的参数和返回值类型
 
@@ -88,7 +87,7 @@ async def cleanup(self):
     try:
         await self.connection.close()
     except RuntimeError as e:
-        if "Event loop isa closed" not in str(e):
+        if "Event loop is a closed" not in str(e):
             raise
 
 class GaodeHooks(AgentHooks):
@@ -141,7 +140,7 @@ class BrowserAgentHooks(AgentHooks):
 #     1.创建 playwright MCP 服务器连接实例
 #     2.配置浏览器agent,包括指令指令和模型设置
 #     3.设置监控钩子显示执行结果
-
+#
 #     浏览器agent负责使用playwright打开浏览器访问高德地图,访问用户询问的有关读点路线问题
 #     在本程序中，此函数创建了负责网络交互的agent, 是整个工作流的第一个关键组件
 #     returns:
@@ -159,71 +158,29 @@ class BrowserAgentHooks(AgentHooks):
 #         },
 #         cache_tools_list=True  # 启用工具缓存，减少重复运行 MCP服务运行工具列表查询的开销
 #     )
-
+#
 #     try:
 #         # 连接playwright MCP 服务
 #         print("正在连接 playwright MCP 服务...")
 #         await playwright_server.connect()
 #         print("playwright MCP 服务连接成功")
-
+#
 #         # 获取 MCP服务可用工具列表
 #         tools = await playwright_server.list_tools()
 #         print(f"playwright MCP 服务可用工具列表{len(tools)}")
-
+#
 #         # 创建浏览器 agent 钩子
 #         # 用于监控和处理六拉起的执行过程和结果，在项目中作为agent生命周期的监控组件
 #         browser_hooks = BrowserAgentHooks()
-
+#
 #         # 创建浏览器agent
 #         # 配置一个专门用于打开百度地图网页的智能体，帮助我们打开百度地图
 #         browser_agent = Agent(
 #             name="GaoDeDocumentBrowser",  # 代理名称，作为代理的唯一标识符
 #             # 详细的agent指导，指导这个agent在百度地图上进行路线检索，在项目中作为一个agent的执行策略和行为规划
 #             instructions="""
-#             你是一个专业的高德地图规划专家，你的任务是使用浏览器工具访问高德地图,搜索用户指定的技术关键词，并提取最权威，最直接相关的官方仓库文档内容
-#             按照以下步骤工作：
-#             ##最重要的事情##：不要点击网页内的图片，不要点击相册内的文件，也就是img文件。
-#             1.导航到百度地图(https://map.baidu.com)网页
-#             2.使用平台内的搜索功能，注意用户是询问一个景点的问题，还是询问这个景点附近的景点的问题，理解后再把问题输入到平台内的搜索栏中
-#             3.根据用户信息，在网页内得到排序后的各个景点后，依次点击这几个景点展现给用户
-#             4.禁止点击网页内的图片
-#             注意：你的唯一任务是获取文档并按格式返回结果， 不要尝试执行额外的任务或动用其他代理，
-#             **返回格式（必须严格按照以下结构）：**
-
-#             **如果用户询问的是酒店的信息，那么按照下列格式
-#                 --------返回内容从这里开始--------
-#                 ## 酒店的信息：
-#                 **酒店的名字**
-#                  - 地址:[]
-#                  - 评分:[“没有就填写无”]
-#                  - 介绍:["没有就写无"]
-#                 --------返回内容到这里结束--------
-#             **如果用户询问的是关于景点路线规划的问题
-#                 --------返回内容从这里开始--------
-#                 ## 景点的信息：
-#                   **景点名称**  
-#                   - 地址：[] 
-#                   - 特色：[]
-#                   - 评分：[“没有就填写无”]  
-#                   - 门票：[“没有就填写免费”]  
-#                 ##路线规划
-#                 总体的路线规划：第一个景点的名称 -> 第二个景点的名称 ->...->最后一个景点的名称
-#                 ##详细路线
-#                   **景点名称** -> **景点名称**:
-#                   - 步行距离：[]米，约[]分钟
-#                   - 路线规划：具体要怎么走的导航内容
-#                  ##天气
-#                   **天气情况：（输出用户询问消息当天的天气信息）
-#                 --------返回内容到这里结束--------
-#                 **重要限制和说明:**
-#                 1.严格按照上面的格式返回信息。不要添加额外的说明的解释
-#                 2.得到了多个地点，那么按先近后远的顺序，以->来连接不同的地点位置，然后给出从第一个地点依次到最后一个地点的路线规划，一定要用->来连接不同的地点
-#                 3.注意要返回一个总体的路线规划，从近到远，依次连接每一个景点
-#                 4.与Gaode_agent一起完成这个任务
-#             **重要限制和说明:**
-#             1.严格按照上面的格式返回信息。不要添加额外的说明的解释
-#             2.不要点击网页内的图片，不能点击网页内的图片
-#            """,
+#             你是一个专业的可视化专家，你通过Gaode_map所规划的线路，在百度地图(https://map.baidu.com)网页中展示线路给用户
+#             """,
 #             mcp_servers=[playwright_server],  # 关联MCP服务器，提供浏览器自动化能力
 #             hooks=browser_hooks,  # 添加浏览器 agent 钩子，用于监控和处理浏览器 agent 的执行过程和结果
 #             model=model_provider.get_model(MODEL_NAME),  # 使用我们自定义的模型提供商，确保agent使用正确的模型
@@ -254,15 +211,22 @@ async def create_Gaode_agent():
             # "description": "高德mcp",
             # "isActive": True,
             "command": "npx",
-            "args": [
-                "-y",
-                "@amap/amap-maps-mcp-server"
-            ],
+            "args": ["-y","@amap/amap-maps-mcp-server"],
             "env": {
                 "AMAP_MAPS_API_KEY": f"{AMAP_MAPS_API_KEY}"
             }
         },
         cache_tools_list=True
+    )
+    tickets_server = MCPServerStdio(
+        name="12306_tickets",
+        params={
+            "command": "npx",
+            "args": [
+                "-y",
+                "12306-mcp"
+            ]
+        }
     )
     try:
         # 连接Gaode MCP 服务
@@ -273,6 +237,14 @@ async def create_Gaode_agent():
         # 获取 MCP服务可用工具列表
         tools = await Gaode_server.list_tools()
         print(f"Gaode MCP 服务可用工具列表{len(tools)}")
+
+        print("正在连接 12306 MCP 服务...")
+        await tickets_server.connect()
+        print("12306 MCP 服务连接成功")
+
+        # 获取 MCP服务可用工具列表
+        tools = await tickets_server.list_tools()
+        print(f"12306 MCP 服务可用工具列表{len(tools)}")
 
         # 创建高德地图 agent 钩子
         # 用于监控和处理六拉起的执行过程和结果，在项目中作为agent生命周期的监控组件
@@ -326,7 +298,7 @@ async def create_Gaode_agent():
                 2.得到了多个地点，那么按先近后远的顺序，以->来连接不同的地点位置，然后给出从第一个地点依次到最后一个地点的路线规划，一定要用->来连接不同的地点
                 3.注意要返回一个总体的路线规划，从近到远，依次连接每一个景点
                 """,
-            mcp_servers=[Gaode_server],  # 关联MCP服务器，提供浏览器自动化能力
+            mcp_servers=[Gaode_server,tickets_server],  # 关联MCP服务器，提供浏览器自动化能力
             hooks=Gaode_hooks,  # 添加浏览器 agent 钩子，用于监控和处理浏览器 agent 的执行过程和结果
             model=model_provider.get_model(MODEL_NAME),  # 使用我们自定义的模型提供商，确保agent使用正确的模型
             model_settings=ModelSettings(
@@ -335,7 +307,7 @@ async def create_Gaode_agent():
                 tool_choice="auto"  # 设置工具选择策略
             )
         )
-        return Gaode_agent, Gaode_server
+        return Gaode_agent, Gaode_server , tickets_server
     except Exception as e:
         print(f"创建高德 agent 时发生异常: {e}")
         await Gaode_server.cleanup()  # 确保清理MCP服务器资源，防止资源泄露和进程残留
@@ -396,7 +368,8 @@ async def create_alipay_agent():
     await alipay_server.cleanup()
 
 
-async def create_controller_agent(Gaode_agent: Agent, alipay_agent: Agent):
+#async def create_controller_agent(browser_agent: Agent, Gaode_agent: Agent, alipay_agent: Agent):
+async def create_controller_agent( Gaode_agent: Agent, alipay_agent: Agent):
     """
     创建主要控制器 agent
 
@@ -437,7 +410,8 @@ async def create_controller_agent(Gaode_agent: Agent, alipay_agent: Agent):
         name="workflow_controller",  # 代理名称
         # agent指令
         instructions="""
-        你是高德地图路线检索和打开网页等的主控制器，你负责协调多个工作流程，确保从高德地图检索路线
+        你是高德地图路线检索和打开网页等的主控制器，你负责协调多个工作流程，确保从高德地图检索路线，接收到用户的消息后，把他交给Gaode_agent
+        处理，处理后输出
 
         工作流程：
         如果是充值的问题，就把任务交给alipay_agent
@@ -452,8 +426,10 @@ async def create_controller_agent(Gaode_agent: Agent, alipay_agent: Agent):
 
         你的成功标准时完成整个流程，确保路线正确输出
         """,
-        tools=[Gaode_tool,  alipay_tool],  # 浏览器agent作为工具提供给控制器 agent使用
-        handoffs=[Gaode_agent,  alipay_agent],  # 作为交接选项提供给控制器agent
+        # tools=[Gaode_tool, browser_tool, alipay_tool],
+        tools=[Gaode_tool, alipay_tool],#浏览器agent作为工具提供给控制器 agent使用
+        # handoffs=[Gaode_agent, browser_agent, alipay_agent],  # 作为交接选项提供给控制器agent
+        handoffs=[Gaode_agent,alipay_agent],
         model=model_provider.get_model(MODEL_NAME),  # 使用我们自己定义的模型提供商
         model_settings=ModelSettings(
             temperature=0.1,  # 定义非常低的温度值，使控制更加确定，减少随机性
@@ -486,6 +462,7 @@ async def process_user_query(query: str):
     # playwright_server = None
     Gaode_server = None
     alipay_server = None
+    tickets_server = None
     try:
         print("========== 开始处理用户查询 ===========")
 
@@ -494,7 +471,7 @@ async def process_user_query(query: str):
         # print("playwright MCP 创建成功")
         # 创建高德agent
         # 负责使用Gaode
-        Gaode_agent, Gaode_server = await create_Gaode_agent()
+        Gaode_agent, Gaode_server, tickets_server = await create_Gaode_agent()
         print("高德 agent 创建成功")
         # 创建alipay agent
         # 负责支付环节
@@ -503,6 +480,7 @@ async def process_user_query(query: str):
 
         # 创建控制器agent
         # 负责协调整个工作流程，管理浏览器agent和文档处理agent作为项目中的系统调度中心
+        #controller_agent = await create_controller_agent(Gaode_agent, "browser_agent", alipay_agent)
         controller_agent = await create_controller_agent(Gaode_agent, alipay_agent)
         print("控制器 agent 创建成功")
 
@@ -558,4 +536,5 @@ async def process_user_query(query: str):
         # 按顺序清理
         # await cleanup_server(playwright_server, "playwright")
         await cleanup_server(Gaode_server, "Gaode")
+        await cleanup_server(tickets_server, "tickets")
         await cleanup_server(alipay_server, "alipay")
