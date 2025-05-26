@@ -20,10 +20,10 @@ API_KEY 是大模型的 API_KEY , BASE_URL 是大模型的固定 URL，MODEL_NAM
 pip install playwright（非必要，此功能目前注释了）
 ~~~
 
-配置API，
+配置API
 
 ### MCP sever configuration
-##Playwright-MCP
+##Playwright-MCP（非必要，此功能目前注释了）
 ~~~json
 {
     "mcpServers": {
