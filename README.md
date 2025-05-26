@@ -54,7 +54,7 @@ pip install playwright（非必要，此功能目前注释了）
     }
 }
 ~~~
-##Alipay-MCP
+##Alipay-MCP（非必要，API和KEY没有配置不影响运行）
 ~~~json
 {
     "mcpServers": {
