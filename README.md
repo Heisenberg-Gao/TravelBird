@@ -12,7 +12,7 @@
 
 AP_APP_ID 是支付宝的应用 ID，AP_APP_KEY 是支付宝的私钥， AP_PUB_KEY 是支付宝的公钥，这三个参数不配置也不影响使用。
 
-API_KEY 是大模型的 API_KEY , BASE_URL 是大模型的固定 URL，MPDEL_NAME 是选用的模型名称， Gao_De_API 和高德 MCP 中的 AMAP_MAPS_API_KEY 是高德地图创建应用时提供的 Key
+API_KEY 是大模型的 API_KEY , BASE_URL 是大模型的固定 URL，MODEL_NAME 是选用的模型名称， Gao_De_API 和高德 MCP 中的 AMAP_MAPS_API_KEY 是高德地图创建应用时提供的 Key
 
 运行在web.py生成的前端网页，本地电脑接口 8080 中使用
 
