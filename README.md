@@ -4,8 +4,18 @@
 # 🤝建议🤝
 我们渴望得到您的建议，如果您有任何想法，请发送邮件到 pengyugaoynu@stu.ynu.edu.cn,我们随时等待您的建议！
 # 如何使用
-下载Node.js，URL：https://nodejs.org/en
-火山模型deepseek-v3 : https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement?LLM=%7B%7D&OpenTokenDrawer=false
+下载 Node.js，URL：https://nodejs.org/en
+
+火山模型 deepseek-v3 配置 URL: https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement?LLM=%7B%7D&OpenTokenDrawer=false
+
+高德地图：https://console.amap.com/dev/key/app，创建一个应用，绑定服务为web端的，此时会有Key 和 安全密钥，这两个根据注释填入index前端页面，仔细找一下
+
+AP_APP_ID 是支付宝的应用 ID，AP_APP_KEY 是支付宝的私钥， AP_PUB_KEY 是支付宝的公钥，这三个参数不配置也不影响使用。
+
+API_KEY 是大模型的 API_KEY , BASE_URL 是大模型的固定 URL，MPDEL_NAME 是选用的模型名称， Gao_De_API 和高德 MCP 中的 AMAP_MAPS_API_KEY 是高德地图创建应用时提供的 Key
+
+运行在web.py生成的前端网页，本地电脑接口 8080 中使用
+
 ~~~
 pip install playwright
 ~~~
