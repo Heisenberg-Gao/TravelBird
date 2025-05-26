@@ -5,6 +5,7 @@
 我们渴望得到您的建议，如果您有任何想法，请发送邮件到 pengyugaoynu@stu.ynu.edu.cn,我们随时等待您的建议！
 # 如何使用
 下载Node.js，URL：https://nodejs.org/en
+火山模型deepseek-v3 : https://console.volcengine.com/ark/region:ark+cn-beijing/openManagement?LLM=%7B%7D&OpenTokenDrawer=false
 ~~~
 pip install playwright
 ~~~
