@@ -108,7 +108,7 @@ pip install playwright（非必要，此功能目前注释了）
 
 
 
-优化：前端的美观程度，以及上下文的记忆能力，而不是单纯的只是输出结果
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Heisenberg-Gao/TravelBird&type=Date)](https://www.star-history.com/#Heisenberg-Gao/TravelBird&Date)\
