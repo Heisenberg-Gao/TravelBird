@@ -101,6 +101,8 @@ pip install playwright（非必要，此功能目前注释了）
 ![image](https://github.com/user-attachments/assets/6e126d23-70c8-4335-a277-f8d35c7a5eb5)
 ![image](https://github.com/user-attachments/assets/9c332b86-b01d-4ef5-80fc-ee19bfa21247)
 <img width="1182" alt="54dd09c257aa21ac0bd61329ba0f6a4" src="https://github.com/user-attachments/assets/0759c18d-3114-46ce-ad97-1bafd73df4d6" />
+![image](https://github.com/user-attachments/assets/359deb33-6da9-4d04-b4b4-6edf61889c8f)
+
 
 
 
